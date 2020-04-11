@@ -30,6 +30,8 @@ SDS011:
 #define BME280_ADDRESS 0x76
 #define SDS011_RX_PIN D7
 #define SDS011_TX_PIN D8
+#define SDS_SAMPLING_TIME 30000
+#define MAIN_LOOP_DELAY_TIME 30000
 
 Adafruit_BME280 bme;
 SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
@@ -40,11 +42,11 @@ void setup() {
 }
 
 void loop() {
-    printBme280Values();
+    readBme280Values();
+    readSds011Values();
+    delay(MAIN_LOOP_DELAY_TIME);
+
     Serial.println();
-    printSds011Values();
-    Serial.println();
-    delay(1000);
 }
 
 void initBme280()
@@ -60,13 +62,10 @@ void initSds011()
 {
     Serial.begin(9600);
     sds.begin();
-
-    Serial.println(sds.queryFirmwareVersion().toString());
-    Serial.println(sds.setActiveReportingMode().toString());
-    Serial.println(sds.setContinuousWorkingPeriod().toString());
+    sds.setQueryReportingMode();
 }
 
-void printBme280Values()
+void readBme280Values()
 {
     Serial.print("Temperatura: ");
     Serial.print(bme.readTemperature());
@@ -81,9 +80,14 @@ void printBme280Values()
     Serial.println("%)");
 }
 
-void printSds011Values()
+void readSds011Values()
 {
-    PmResult pm = sds.readPm();
+    WorkingStateResult state = sds.wakeup();
+    if (!state.isWorking())
+        Serial.println("Problem ze wzbudzeniem czujnika SDS011.");
+    delay(SDS_SAMPLING_TIME);
+
+    PmResult pm = sds.queryPm();
     if (pm.isOk()) {
         Serial.print("PM2.5 = ");
         Serial.println(pm.pm25);
@@ -95,4 +99,8 @@ void printSds011Values()
         Serial.print("Could not read values from sensor, reason: ");
         Serial.println(pm.statusToString());
     }
+
+    state = sds.sleep();
+    if (state.isWorking())
+        Serial.println("Problem z uœpieniem czujnika SDS011.");
 }

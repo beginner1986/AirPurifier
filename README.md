@@ -17,13 +17,13 @@ Libraries:
     - Nova Fitness SDS dust sensors Library: https://github.com/lewapek/sds-dust-sensors-arduino-library
 
 Wiring:
-- BME280:
+- BME280 (I2C):
     - VCC -> 3V3
     - GND -> G
     - SCL -> D1
     - SDA -> D2
 
-- SDS011:
+- SDS011 (UART):
     - 5V -> 5V
     - G -> G
     - TXD -> D7
