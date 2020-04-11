@@ -1,15 +1,54 @@
 /*
- Name:		AirPurifier.ino
- Created:	4/11/2020 10:02:18 AM
- Author:	begin
+----------- PINOUT ---------------
+BME280:
+    - VCC -> 3V3
+    - GND -> G
+    - SCL -> D1
+    - SDA -> D2
+----------- /PINOUT ---------------
+
+------------- LIBS ----------------
+BME280:
+    - Adafruit Unified Sensor Library: https://github.com/adafruit/Adafruit_Sensor
+    - Adafruit BME280 Library: https://github.com/adafruit/Adafruit_BME280_Library
+------------- /LIBS ----------------
 */
 
-// the setup function runs once when you press reset or power the board
-void setup() {
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 
+Adafruit_BME280 bme;
+
+void setup() {
+    initBme280();
 }
 
-// the loop function runs over and over again until power down or reset
 void loop() {
-  
+    printBme280Values();
+    Serial.println();
+}
+
+void initBme280()
+{
+    if (!bme.begin(0x76))
+    {
+        Serial.println("Nie wykryto czujnika BME260!");
+        while (1);
+    }
+}
+
+void printBme280Values()
+{
+    Serial.print("Temperatura: ");
+    Serial.print(bme.readTemperature());
+    Serial.println("*C)");
+
+    Serial.print("Cisnienie: ");
+    Serial.print(bme.readPressure() / 100.0f);
+    Serial.println("hPa)");
+
+    Serial.print("Wilgotnosc: ");
+    Serial.print(bme.readHumidity());
+    Serial.println("%)");
 }
