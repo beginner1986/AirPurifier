@@ -89,8 +89,8 @@ SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
 // ------------ SETUP -----------------
 void setup() {
     Serial.begin(9600);
-    initBme280();
-    initSds011();
+    //initBme280();
+    //initSds011();
     initFileSystem();
     initWiFi();
 }
@@ -98,10 +98,10 @@ void setup() {
 
 // ----------- LOOP -----------------
 void loop() {
-    readBme280Values();
-    readSds011Values();
-
+    //readBme280Values();
+    //readSds011Values();
     server.handleClient();
+    //Serial.println();
 
     /*
     unsigned long now = millis();
@@ -115,7 +115,6 @@ void loop() {
     }
     */
 
-    Serial.println();
 }
 // ----------- /LOOP -----------------
 
