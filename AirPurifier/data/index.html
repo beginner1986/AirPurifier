@@ -1,0 +1,115 @@
+<head>
+    <title>Mi Bieda Purifier Control Panel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<body style="background-color:#1c6471;" onload='process()'>
+
+
+
+    <div class="col-sm-12">
+	
+	<nav class="navbar navbar-dark" style="background-color: #212529;">
+  <form class="form-inline">
+
+   <button type="button" class="btn btn-outline-info" onclick="window.location='/'">Dane z czujników</button> 
+   &
+    <button type="button" class="btn btn-outline-info" onclick="window.location='alerts.html'">Centrum alertów</button>
+	
+
+
+  </form>
+ 	 <span class="navbar-text my-2 my-sm-0">
+	 
+    Mi Bieda Purifier Control Panel
+  </span>
+</nav>
+
+        <table class="table table-borderless table-dark">
+
+            <tbody>
+                <tr>
+                    <td colspan="4"> PMs </td>
+                </tr>
+                <tr>
+                    <td>
+                        <center>
+                            <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                                <div class="card-header">PM 1</div>
+                                <div class="card-body">
+
+                                    <font size="8" id='temp_1' color="black"></font>
+
+                                </div>
+                            </div>
+
+                    </td>
+
+                    <td>
+                        <center>
+                            <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                                <div class="card-header">PM 2.5</div>
+                                <div class="card-body">
+
+                                    <font size="8" id='temp_2' color="black"></font>
+
+                                </div>
+                            </div>
+
+                    </td>
+                    <td>
+                        <center>
+                            <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                                <div class="card-header">PM 10</div>
+                                <div class="card-body">
+
+                                    <font size="8" id='temp_3' color="black"></font>
+
+                                </div>
+                            </div>
+
+                    </td>
+                </tr>
+                </center>
+
+
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<SCRIPT>
+    var xmlHttp = createXmlHttpObject();
+
+    function createXmlHttpObject() {
+        if (window.XMLHttpRequest) {
+            xmlHttp = new XMLHttpRequest();
+        } else {
+            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        return xmlHttp;
+    }
+
+    function process() {
+        if (xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
+            xmlHttp.open('PUT', 'xml', true);
+            xmlHttp.onreadystatechange = handleServerResponse;
+            xmlHttp.send(null);
+        }
+        setTimeout('process()', 2000);
+    }
+
+    function handleServerResponse() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            xmlResponse = xmlHttp.responseXML;
+            xmldoc = xmlResponse.getElementsByTagName('response');
+            message = xmldoc[0].firstChild.nodeValue;
+            var array = message.split("_");
+            document.getElementById('temp_1').innerHTML = array[1] + "μg/m3";
+            document.getElementById('temp_2').innerHTML = array[2] + "μg/m3";
+            document.getElementById('temp_3').innerHTML = array[3] + "μg/m3";
+        }
+    }
+</SCRIPT>

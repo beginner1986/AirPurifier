@@ -1,0 +1,235 @@
+
+<head>
+    <title>Mi Bieda Purifier Control Panel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+	
+</head>
+
+<body style="background-color:#1c6471;" onload='process()'>
+
+
+
+    <div class="col-sm-12" >
+	
+	<nav class="navbar navbar-dark" style="background-color: #212529;">
+  <form class="form-inline">
+
+   <button type="button" class="btn btn-outline-info" onclick="window.location='/'">Informacje</button> 
+   &
+    <button type="button" class="btn btn-outline-info" onclick="window.location='alerts.html'">Sterowanie</button>
+
+
+
+  </form>
+ 	 <span class="navbar-text my-2 my-sm-0">
+	 
+    Mi Bieda Purifier Control Panel
+  </span>
+</nav>
+
+        <table class="table table-borderless table-dark" style="background-color: #212529;">
+
+            <tbody>
+                <tr>
+                    <td colspan="4"> Wybierz sposób sterowania </td>
+                </tr>
+                <tr>
+                    <td>
+               
+
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-outline-info">
+    <input type="radio" name="options" id="option1" value="manual" autocomplete="off"  > Manualnie 
+  </label>
+  <label class="btn btn-outline-info">
+    <input type="radio" name="options" id="option2" value="semiauto" autocomplete="off"> Półautomat
+  </label>
+  <label class="btn btn-outline-info">
+    <input type="radio" name="options" id="option3" value="auto" autocomplete="off"> Automat
+  </label>
+</div>
+
+<div id="myRadioGroup">
+
+
+    <div id="manual" class="desc">
+        manual
+    </div>
+    <div id="semiauto" class="desc">
+        semiauto
+    </div>
+	<div id="auto" class="desc">
+        auto
+    </div>
+</div>
+
+
+
+			   
+<div class="input-group">
+  <select class="custom-select" id="select1" name="room" aria-label="Example select with button addon">
+    <option selected>Wybierz pokój</option>
+    <option name="Duży pokój" value="0">Duży pokój</option>
+    <option value="1">Mały pokój</option>
+    <option value="2">Kuchnia</option>
+  </select>
+
+</div>
+
+                    </td>
+<td>
+                    <div class="input-group">
+  <select class="custom-select" id="select2" aria-label="Example select with button addon">
+    <option selected>Wybierz atrybut do alertu</option>
+    <option value="0">Temperatura</option>
+    <option value="1">Wilgotność</option>
+    <option value="2">Ciśnienie</option>
+  </select>
+
+</div>
+
+                    </td>
+					<td>
+                    <div class="input-group">
+  <select class="custom-select" id="select3" aria-label="Example select with button addon">
+    <option selected>Wybierz na co reagować</option>
+    <option value="0">Wieksza/e</option>
+    <option value="1">Mniejsza/e</option>
+    <option value="2">Równa/e</option>
+  </select>
+
+</div>
+
+                    </td>
+					
+					
+<td>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" id="val" placeholder="Wartość" aria-label="Recipient's username" aria-describedby="button-addon2">
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" type="button" id="save_button">Dodaj</button>
+  </div>
+</div>
+
+                    </td>
+					
+
+                </tr>
+                </center>
+
+
+            </tbody>
+        </table>
+		
+		
+		
+    </div>
+	
+<div class="col-sm-12" id="body" >	
+	
+	</div>
+
+
+
+
+<script type="text/javascript">
+          $('#save_button').click(function(e){
+    
+            e.preventDefault();
+            var room = $('#select1').val();
+			var attribute = $('#select2').val();
+			var sign = $('#select3').val();
+			var val = $('#val').val();
+			if (room.length < 12 && attribute.length < 12 && sign.length < 12 && val > 0 && val < 1050)
+			{
+			var alertNames = "_" + document.getElementById('select1').selectedOptions[0].text + "_" + document.getElementById('select2').selectedOptions[0].text + "_" + document.getElementById('select3').selectedOptions[0].text + "_" + val + "_";
+            $.get('/save?room=' + room + '&attribute='+ attribute + '&sign='+ sign + '&val='+ val + '&alertNames='+ alertNames, function(data){
+			  location.reload();
+            });
+			}
+			else
+			alert("Wprowadź poprawne dane");
+          }); 
+		  
+    var xmlHttp = createXmlHttpObject();
+
+    function createXmlHttpObject() {
+        if (window.XMLHttpRequest) {
+            xmlHttp = new XMLHttpRequest();
+        } else {
+            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        return xmlHttp;
+    }
+
+    function process() {
+        if (xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
+            xmlHttp.open('PUT', 'xmla', true);
+            xmlHttp.onreadystatechange = handleServerResponse;
+            xmlHttp.send(null);
+        }
+        setTimeout('process()', 2000);
+    }
+
+    function handleServerResponse() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            xmlResponse = xmlHttp.responseXML;
+            xmldoc = xmlResponse.getElementsByTagName('response');
+            message = xmldoc[0].firstChild.nodeValue;
+
+            var array = message.split("_");
+			var array2d = [];
+			array2d.push(["Lista aktywnych alertów"]);
+			array2d.push(["Pokój","Atrybut","Zależność","Wartość"]);
+			for (i = 1; i < array.length; i++) {
+			if (array[i].length>1)
+			array2d.push([array[i++],array[i++],array[i++],array[i++]]);
+			}
+			createTable(array2d);
+
+			
+        }
+    }
+
+function createTable(tableData) {
+
+      var table = document.createElement('table');
+      var row = {};
+      var cell = {};
+
+		table.className = 'table table-dark';
+		
+      tableData.forEach(function(rowData) {
+        row = table.insertRow(-1);
+        rowData.forEach(function(cellData) {
+          cell = row.insertCell();
+    			cell.textContent = cellData;
+        });
+      });
+    //  document.body.appendChild(table);
+	  document.getElementById("body").innerHTML = "";
+	  document.getElementById("body").appendChild(table);
+	  
+    }
+
+
+
+$(document).ready(function() {
+    $("div.desc").hide();
+    $("input[name$='options']").click(function() {
+        var test = $(this).val();
+        $("div.desc").hide();
+        $("#" + test).show();
+    });
+});
+
+
+</script>
+
+</body>

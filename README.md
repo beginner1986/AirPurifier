@@ -15,6 +15,13 @@ Libraries:
     - Adafruit BME280 Library: https://github.com/adafruit/Adafruit_BME280_Library
 - for SDS011:
     - Nova Fitness SDS dust sensors Library: https://github.com/lewapek/sds-dust-sensors-arduino-library
+- for file system:
+    - SPIFFS (FS.h)
+- for WiFi:
+    - ESP8266WiFi: https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
+    - WiFiVlient.h
+- for Web Server:
+    - ESP8266WebServer: https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
 
 Wiring:
 - BME280 (I2C):
