@@ -62,26 +62,23 @@ typedef struct {
 #define BME280_ADDRESS 0x76
 #define SDS011_RX_PIN D7
 #define SDS011_TX_PIN D8
-#define SDS_SAMPLING_TIME 30000
 // ----------- /CONSTS ----------------
 
-// ---------- WiFi CONFIG --------------
+// ------------ GLOBALS ----------------
 const char* ssid = "beginner";
 const char* password = "Anakonda11";
 ESP8266WebServer server(80); //Server on port 80
 String wholeAlertData[20];
 
-const unsigned long oneMinute = 1 * 60 * 1000UL;
-const unsigned long twoMinutes = 2 * 60 * 1000UL;
-static unsigned long lastSampleTime = 0;
+static unsigned long mainLoopTime = millis();
+static unsigned long sdsSampleTime = millis();
+unsigned long now = millis();
 int PM_AE_UG_1_0, PM_AE_UG_2_5, PM_AE_UG_10_0 = 0;
 int alertArrayIndex = 0;
 
 node nodeArray[]{ { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0} };
 alert alertArray[20];
-// --------- /WiFi CONFIG --------------
 
-// ------------ GLOBALS ----------------
 Adafruit_BME280 bme;
 SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
 // ----------- /GLOBALS ----------------
@@ -89,8 +86,8 @@ SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
 // ------------ SETUP -----------------
 void setup() {
     Serial.begin(9600);
-    //initBme280();
-    //initSds011();
+    initBme280();
+    initSds011();
     initFileSystem();
     initWiFi();
 }
@@ -98,30 +95,22 @@ void setup() {
 
 // ----------- LOOP -----------------
 void loop() {
-    //readBme280Values();
-    //readSds011Values();
+    now = millis();
     server.handleClient();
-    //Serial.println();
 
-    /*
-    unsigned long now = millis();
-    if (now - lastSampleTime >= oneMinute)
-    {
-        lastSampleTime += oneMinute;
-        Serial.println("Minuta minela");
-        PM_AE_UG_1_0 += 1;
-        PM_AE_UG_2_5 += 1;
-        PM_AE_UG_10_0 += 1;
+    if (now - mainLoopTime >= 10000UL) {
+        readSds011Values();
+        readBme280Values();
+        Serial.println();
+        
+        mainLoopTime = millis();
     }
-    */
-
 }
 // ----------- /LOOP -----------------
 
 // ----------- FUNCTIONS -----------------
 void initBme280() {
-    if (!bme.begin(BME280_ADDRESS))
-    {
+    if (!bme.begin(BME280_ADDRESS)) {
         Serial.println("Nie wykryto czujnika BME260!");
         while (1);
     }
@@ -135,22 +124,24 @@ void initSds011() {
 void readBme280Values() {
     Serial.print("Temperatura: ");
     Serial.print(bme.readTemperature());
-    Serial.println("*C)");
+    Serial.println("*C");
 
     Serial.print("Cisnienie: ");
     Serial.print(bme.readPressure() / 100.0f);
-    Serial.println("hPa)");
+    Serial.println("hPa");
 
     Serial.print("Wilgotnosc: ");
     Serial.print(bme.readHumidity());
-    Serial.println("%)");
+    Serial.println("%");
 }
 
 void readSds011Values() {
     WorkingStateResult state = sds.wakeup();
-    if (!state.isWorking())
+    if (!state.isWorking()) {
         Serial.println("Problem ze wzbudzeniem czujnika SDS011.");
-    delay(SDS_SAMPLING_TIME);
+    }
+
+    unsigned long startTime = millis();
 
     PmResult pm = sds.queryPm();
     if (pm.isOk()) {
@@ -158,16 +149,21 @@ void readSds011Values() {
         Serial.println(pm.pm25);
         Serial.print("PM10 = ");
         Serial.println(pm.pm10);
+
+        PM_AE_UG_1_0 = -1;  // not supported by SDS011
+        PM_AE_UG_2_5 = pm.pm25;
+        PM_AE_UG_10_0 = pm.pm10;
+    
+        /*
+        state = sds.sleep();
+        if (state.isWorking())
+            Serial.println("Problem z uœpieniem czujnika SDS011.");
+        */
     }
     else {
         Serial.println("B³¹d czujnika SDS011.");
-        Serial.print("Could not read values from sensor, reason: ");
         Serial.println(pm.statusToString());
     }
-
-    state = sds.sleep();
-    if (state.isWorking())
-        Serial.println("Problem z uœpieniem czujnika SDS011.");
 }
 
 // WiFi stuff
@@ -234,5 +230,4 @@ void initWiFi() {
     server.begin();
     Serial.println("HTTP server started");
 }
-
 // ----------- /FUNCTIONS -----------------
