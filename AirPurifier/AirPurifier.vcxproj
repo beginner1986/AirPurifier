@@ -118,6 +118,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Alert.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="SensorsData.h" />
     <ClInclude Include="__vm\.AirPurifier.vsarduino.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

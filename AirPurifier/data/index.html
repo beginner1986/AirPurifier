@@ -1,4 +1,4 @@
-<head>
+﻿<head>
     <title>Mi Bieda Purifier Control Panel</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -40,7 +40,7 @@
                                 <div class="card-header">PM 1</div>
                                 <div class="card-body">
 
-                                    <font size="8" id='temp_1' color="black"></font>
+                                    <font size="8" id='pm1' color="black"></font>
 
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                 <div class="card-header">PM 2.5</div>
                                 <div class="card-body">
 
-                                    <font size="8" id='temp_2' color="black"></font>
+                                    <font size="8" id='pm2_5' color="black"></font>
 
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                                 <div class="card-header">PM 10</div>
                                 <div class="card-body">
 
-                                    <font size="8" id='temp_3' color="black"></font>
+                                    <font size="8" id='pm10' color="black"></font>
 
                                 </div>
                             </div>
@@ -105,11 +105,9 @@
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             xmlResponse = xmlHttp.responseXML;
             xmldoc = xmlResponse.getElementsByTagName('response');
-            message = xmldoc[0].firstChild.nodeValue;
-            var array = message.split("_");
-            document.getElementById('temp_1').innerHTML = array[1] + "μg/m3";
-            document.getElementById('temp_2').innerHTML = array[2] + "μg/m3";
-            document.getElementById('temp_3').innerHTML = array[3] + "μg/m3";
+            document.getElementById('pm1').innerHTML = xmldoc[0].getElementsByTagName('pm1')[0].childNodes[0].nodeValue + "μg/m3";
+            document.getElementById('pm2_5').innerHTML = xmldoc[0].getElementsByTagName('pm2_5')[0].childNodes[0].nodeValue + "μg/m3";
+            document.getElementById('pm10').innerHTML = xmldoc[0].getElementsByTagName('pm10')[0].childNodes[0].nodeValue + "μg/m3";
         }
     }
 </SCRIPT>

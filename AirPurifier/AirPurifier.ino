@@ -38,25 +38,11 @@ Web Server:
 #include <WiFiClient.h>
 #include "FS.h"
 #include <ESP8266WebServer.h>
+
+#include "SensorsData.h"
+//#include "Node.h"
+//#include "Alert.h"
 //----------- /INCLUDES ----------------
-
-// ------------ STRUCTS ----------------
-typedef struct {
-    float temperature;
-    float humidity;
-    float pressure;
-    float voltage;
-} node;
-
-typedef struct {
-    int nodeNum;
-    int attribute;
-    int sign;
-    float val;
-    int isActive;
-
-} alert;
-// ----------- /STRUCTS ----------------
 
 // ------------ CONSTS ----------------
 #define SDS011_RX_PIN D7
@@ -64,7 +50,7 @@ typedef struct {
 
 const String SSID = "beginner";
 const String WIFI_PASSWORD = "Anakonda11";
-const unsigned long SDS_WORKING_PERIOD = 10000UL;
+const unsigned long SDS_WORKING_PERIOD = 10000UL;   // short time for debugging
 // ----------- /CONSTS ----------------
 
 // ------------ GLOBALS ----------------
@@ -74,19 +60,14 @@ unsigned long deltaTime = 0;
 
 int alertArrayIndex = 0;
 String wholeAlertData[20];
-node nodeArray[]{ { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0} };
-alert alertArray[20];
+//Node nodeArray[]{ { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0} };
+//Alert alertArray[20];
 
 Adafruit_BME280 bme;
 SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
 ESP8266WebServer server(80);
 
-int pm1 = 0;
-int pm2_5 = 0;
-int pm10 = 0;
-int temperature = 0;
-int pressure = 0;
-int humidity = 0;
+SensorData sensorData;
 // ----------- /GLOBALS ----------------
 
 // ------------ SETUP -----------------
@@ -147,13 +128,13 @@ void sdsTurnOff() {
 }
 
 void readBme280Values() {
-    temperature = bme.readTemperature();
-    pressure = bme.readPressure() / 100.0f;
-    humidity = bme.readHumidity();
+    sensorData.temperature = bme.readTemperature();
+    sensorData.pressure = bme.readPressure() / 100.0f;
+    sensorData.humidity = bme.readHumidity();
 
-    Serial.println("Temperature: " + String(temperature) + "*C");
-    Serial.println("Pressure: " + String(pressure) + "hPa");
-    Serial.print("Humidity: " + String(humidity) + "%");
+    Serial.println("Temperature: " + String(sensorData.temperature) + "*C");
+    Serial.println("Pressure: " + String(sensorData.pressure) + "hPa");
+    Serial.print("Humidity: " + String(sensorData.humidity) + "%");
 }
 
 void readSds011Values() {
@@ -164,27 +145,21 @@ void readSds011Values() {
         Serial.print("PM10 = ");
         Serial.println(pm.pm10);
 
-        pm1 = -1;  // not supported by SDS011
-        pm2_5 = pm.pm25;
-        pm10 = pm.pm10;
+        sensorData.pm1 = -1;  // not supported by SDS011
+        sensorData.pm2_5 = pm.pm25;
+        sensorData.pm10 = pm.pm10;
     }
     else {
         Serial.println("SDS011 sensor data read error: " + pm.statusToString());
     }
 }
 
-// WiFi stuff
 void handleXML() {
-    String k = "_" + String(pm1);
-    String e = "_" + String(pm2_5);
-    String u = "_" + String(pm10);
-    String XML = "<?xml version='1.0'?>";
-    XML += "<response>";
-    XML += k + e + u + "_";
-    XML += "</response>";
+    String XML = sensorData.getXML();
     server.send(200, "text/xml", XML);
 }
 
+/*
 void handleAlertData() {
     String XML = "<?xml version='1.0'?>";
     XML += "<response>";
@@ -193,7 +168,9 @@ void handleAlertData() {
     XML += "</response>";
     server.send(200, "text/xml", XML);
 }
+*/
 
+/*
 void handleSave() {
     if (server.arg("room") != "" && server.arg("attribute") != "" && server.arg("sign") != "" && server.arg("val") != "" && server.arg("alertNames") != "") {
         alertArray[alertArrayIndex].nodeNum = server.arg("room").toInt();
@@ -207,6 +184,7 @@ void handleSave() {
         handleAlertData();
     }
 }
+*/
 
 void initFileSystem() {
     if (!SPIFFS.begin()) {
@@ -223,17 +201,17 @@ void initWiFi() {
     }
     
     Serial.println("\nConnected to " + SSID);
-    Serial.println("IP address: " + WiFi.localIP().toString() + "\n");
+    Serial.println("IP address: " + WiFi.localIP().toString());
 }
 
 void initServer() {
     server.serveStatic("/", SPIFFS, "/index.html");
     server.serveStatic("/alerts.html", SPIFFS, "/alerts.html");
     server.on("/xml", handleXML);
-    server.on("/xmla", handleAlertData);
-    server.on("/save", handleSave);
+    //server.on("/xmla", handleAlertData);
+    //server.on("/save", handleSave);
 
     server.begin();
-    Serial.println("HTTP server started");
+    Serial.println("HTTP server started.\n");
 }
 // ----------- /FUNCTIONS -----------------
