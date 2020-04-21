@@ -3,6 +3,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="script.js"></script>
 </head>
 
 <body style="background-color:#1c6471;" onload='process()'>
@@ -44,7 +45,7 @@
 
                                 </div>
                             </div>
-
+                        </center>
                     </td>
 
                     <td>
@@ -57,7 +58,7 @@
 
                                 </div>
                             </div>
-
+                        </center>
                     </td>
                     <td>
                         <center>
@@ -69,45 +70,13 @@
 
                                 </div>
                             </div>
-
+                        </center>
                     </td>
                 </tr>
-                </center>
 
 
             </tbody>
         </table>
     </div>
+
 </body>
-
-<SCRIPT>
-    var xmlHttp = createXmlHttpObject();
-
-    function createXmlHttpObject() {
-        if (window.XMLHttpRequest) {
-            xmlHttp = new XMLHttpRequest();
-        } else {
-            xmlHttp = new ActiveXObject('Microsoft.XMLHTTP');
-        }
-        return xmlHttp;
-    }
-
-    function process() {
-        if (xmlHttp.readyState == 0 || xmlHttp.readyState == 4) {
-            xmlHttp.open('PUT', 'xml', true);
-            xmlHttp.onreadystatechange = handleServerResponse;
-            xmlHttp.send(null);
-        }
-        setTimeout('process()', 2000);
-    }
-
-    function handleServerResponse() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            xmlResponse = xmlHttp.responseXML;
-            xmldoc = xmlResponse.getElementsByTagName('response');
-            document.getElementById('pm1').innerHTML = xmldoc[0].getElementsByTagName('pm1')[0].childNodes[0].nodeValue + "μg/m3";
-            document.getElementById('pm2_5').innerHTML = xmldoc[0].getElementsByTagName('pm2_5')[0].childNodes[0].nodeValue + "μg/m3";
-            document.getElementById('pm10').innerHTML = xmldoc[0].getElementsByTagName('pm10')[0].childNodes[0].nodeValue + "μg/m3";
-        }
-    }
-</SCRIPT>

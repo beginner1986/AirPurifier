@@ -114,6 +114,7 @@
   <ItemGroup>
     <None Include="data\alerts.html" />
     <None Include="data\index.html" />
+    <None Include="data\script.js" />
     <None Include="src\arduino folders read me.txt">
     </None>
   </ItemGroup>

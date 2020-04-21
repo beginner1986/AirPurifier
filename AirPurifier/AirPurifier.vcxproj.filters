@@ -28,6 +28,9 @@
     <None Include="data\index.html">
       <Filter>data</Filter>
     </None>
+    <None Include="data\script.js">
+      <Filter>data</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.AirPurifier.vsarduino.h">

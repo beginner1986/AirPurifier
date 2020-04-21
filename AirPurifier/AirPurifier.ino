@@ -207,6 +207,7 @@ void initWiFi() {
 void initServer() {
     server.serveStatic("/", SPIFFS, "/index.html");
     server.serveStatic("/alerts.html", SPIFFS, "/alerts.html");
+    server.serveStatic("/script.js", SPIFFS, "/script.js");
     server.on("/xml", handleXML);
     //server.on("/xmla", handleAlertData);
     //server.on("/save", handleSave);
