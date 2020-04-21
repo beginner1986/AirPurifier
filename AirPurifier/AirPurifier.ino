@@ -114,7 +114,7 @@ void loop() {
     else {
         readSds011Values();
         readBme280Values();
-        Serial.println();
+        Serial.println("\n");
         mainLoopTime = millis();
     }
 }
@@ -232,7 +232,7 @@ void initServer() {
     server.on("/xml", handleXML);
     server.on("/xmla", handleAlertData);
     server.on("/save", handleSave);
-    //Start server
+
     server.begin();
     Serial.println("HTTP server started");
 }
