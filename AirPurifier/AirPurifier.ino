@@ -59,29 +59,34 @@ typedef struct {
 // ----------- /STRUCTS ----------------
 
 // ------------ CONSTS ----------------
-#define BME280_ADDRESS 0x76
 #define SDS011_RX_PIN D7
 #define SDS011_TX_PIN D8
-#define SDS_WORKING_PERIOD 10000UL
+
+const String SSID = "beginner";
+const String WIFI_PASSWORD = "Anakonda11";
+const unsigned long SDS_WORKING_PERIOD = 10000UL;
 // ----------- /CONSTS ----------------
 
 // ------------ GLOBALS ----------------
-const String ssid = "beginner";
-const String password = "Anakonda11";
-ESP8266WebServer server(80); //Server on port 80
-String wholeAlertData[20];
-
 unsigned long mainLoopTime = millis();
-unsigned long deltaTime = 0;
 unsigned long now = millis();
-int PM_AE_UG_1_0, PM_AE_UG_2_5, PM_AE_UG_10_0 = 0;
-int alertArrayIndex = 0;
+unsigned long deltaTime = 0;
 
+int alertArrayIndex = 0;
+String wholeAlertData[20];
 node nodeArray[]{ { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0} };
 alert alertArray[20];
 
 Adafruit_BME280 bme;
 SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
+ESP8266WebServer server(80);
+
+int pm1 = 0;
+int pm2_5 = 0;
+int pm10 = 0;
+int temperature = 0;
+int pressure = 0;
+int humidity = 0;
 // ----------- /GLOBALS ----------------
 
 // ------------ SETUP -----------------
@@ -113,13 +118,12 @@ void loop() {
         mainLoopTime = millis();
     }
 }
-
 // ----------- /LOOP -----------------
 
 // ----------- FUNCTIONS -----------------
 void initBme280() {
-    if (!bme.begin(BME280_ADDRESS)) {
-        Serial.println("Nie wykryto czujnika BME260!");
+    if (!bme.begin(BME280_ADDRESS_ALTERNATE)) {
+        Serial.println("BME260 sensor not detected!");
         while (1);
     }
 }
@@ -132,28 +136,24 @@ void initSds011() {
 void sdsTurnOn() {
     WorkingStateResult state = sds.wakeup();
     if (!state.isWorking()) {
-        Serial.println("Problem ze wzbudzeniem czujnika SDS011.");
+        Serial.println("SDS011 wake up failed!");
     }
 }
 
 void sdsTurnOff() {
     WorkingStateResult state = sds.sleep();
     if (state.isWorking())
-        Serial.println("Problem z uœpieniem czujnika SDS011.");
+        Serial.println("SDS011 sllep failed!");
 }
 
 void readBme280Values() {
-    Serial.print("Temperatura: ");
-    Serial.print(bme.readTemperature());
-    Serial.println("*C");
+    temperature = bme.readTemperature();
+    pressure = bme.readPressure() / 100.0f;
+    humidity = bme.readHumidity();
 
-    Serial.print("Cisnienie: ");
-    Serial.print(bme.readPressure() / 100.0f);
-    Serial.println("hPa");
-
-    Serial.print("Wilgotnosc: ");
-    Serial.print(bme.readHumidity());
-    Serial.println("%");
+    Serial.println("Temperature: " + String(temperature) + "*C");
+    Serial.println("Pressure: " + String(pressure) + "hPa");
+    Serial.print("Humidity: " + String(humidity) + "%");
 }
 
 void readSds011Values() {
@@ -164,21 +164,20 @@ void readSds011Values() {
         Serial.print("PM10 = ");
         Serial.println(pm.pm10);
 
-        PM_AE_UG_1_0 = -1;  // not supported by SDS011
-        PM_AE_UG_2_5 = pm.pm25;
-        PM_AE_UG_10_0 = pm.pm10;
+        pm1 = -1;  // not supported by SDS011
+        pm2_5 = pm.pm25;
+        pm10 = pm.pm10;
     }
     else {
-        Serial.println("B³¹d odczytu z czujnika SDS011.");
-        Serial.println(pm.statusToString());
+        Serial.println("SDS011 sensor data read error: " + pm.statusToString());
     }
 }
 
 // WiFi stuff
 void handleXML() {
-    String k = "_" + String(PM_AE_UG_1_0);
-    String e = "_" + String(PM_AE_UG_2_5);
-    String u = "_" + String(PM_AE_UG_10_0);
+    String k = "_" + String(pm1);
+    String e = "_" + String(pm2_5);
+    String u = "_" + String(pm10);
     String XML = "<?xml version='1.0'?>";
     XML += "<response>";
     XML += k + e + u + "_";
@@ -217,13 +216,13 @@ void initFileSystem() {
 }
 
 void initWiFi() {
-    WiFi.begin(ssid, password);
+    WiFi.begin(SSID, WIFI_PASSWORD);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
     }
     
-    Serial.println("\nConnected to " + ssid);
+    Serial.println("\nConnected to " + SSID);
     Serial.println("IP address: " + WiFi.localIP().toString() + "\n");
 }
 
