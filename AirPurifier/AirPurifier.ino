@@ -62,16 +62,17 @@ typedef struct {
 #define BME280_ADDRESS 0x76
 #define SDS011_RX_PIN D7
 #define SDS011_TX_PIN D8
+#define SDS_WORKING_PERIOD 10000UL
 // ----------- /CONSTS ----------------
 
 // ------------ GLOBALS ----------------
-const char* ssid = "beginner";
-const char* password = "Anakonda11";
+const String ssid = "beginner";
+const String password = "Anakonda11";
 ESP8266WebServer server(80); //Server on port 80
 String wholeAlertData[20];
 
-static unsigned long mainLoopTime = millis();
-static unsigned long sdsSampleTime = millis();
+unsigned long mainLoopTime = millis();
+unsigned long deltaTime = 0;
 unsigned long now = millis();
 int PM_AE_UG_1_0, PM_AE_UG_2_5, PM_AE_UG_10_0 = 0;
 int alertArrayIndex = 0;
@@ -90,22 +91,29 @@ void setup() {
     initSds011();
     initFileSystem();
     initWiFi();
+    initServer();
 }
 // ----------- /SETUP -----------------
 
 // ----------- LOOP -----------------
 void loop() {
-    now = millis();
     server.handleClient();
+    deltaTime = millis() - mainLoopTime;
 
-    if (now - mainLoopTime >= 10000UL) {
+    if (deltaTime < SDS_WORKING_PERIOD) {
+        sdsTurnOff();
+    }
+    else if(deltaTime < 2 * SDS_WORKING_PERIOD) {
+        sdsTurnOn();
+    }
+    else {
         readSds011Values();
         readBme280Values();
         Serial.println();
-        
         mainLoopTime = millis();
     }
 }
+
 // ----------- /LOOP -----------------
 
 // ----------- FUNCTIONS -----------------
@@ -119,6 +127,19 @@ void initBme280() {
 void initSds011() {
     sds.begin();
     sds.setQueryReportingMode();
+}
+
+void sdsTurnOn() {
+    WorkingStateResult state = sds.wakeup();
+    if (!state.isWorking()) {
+        Serial.println("Problem ze wzbudzeniem czujnika SDS011.");
+    }
+}
+
+void sdsTurnOff() {
+    WorkingStateResult state = sds.sleep();
+    if (state.isWorking())
+        Serial.println("Problem z uœpieniem czujnika SDS011.");
 }
 
 void readBme280Values() {
@@ -136,13 +157,6 @@ void readBme280Values() {
 }
 
 void readSds011Values() {
-    WorkingStateResult state = sds.wakeup();
-    if (!state.isWorking()) {
-        Serial.println("Problem ze wzbudzeniem czujnika SDS011.");
-    }
-
-    unsigned long startTime = millis();
-
     PmResult pm = sds.queryPm();
     if (pm.isOk()) {
         Serial.print("PM2.5 = ");
@@ -153,15 +167,9 @@ void readSds011Values() {
         PM_AE_UG_1_0 = -1;  // not supported by SDS011
         PM_AE_UG_2_5 = pm.pm25;
         PM_AE_UG_10_0 = pm.pm10;
-    
-        /*
-        state = sds.sleep();
-        if (state.isWorking())
-            Serial.println("Problem z uœpieniem czujnika SDS011.");
-        */
     }
     else {
-        Serial.println("B³¹d czujnika SDS011.");
+        Serial.println("B³¹d odczytu z czujnika SDS011.");
         Serial.println(pm.statusToString());
     }
 }
@@ -209,18 +217,17 @@ void initFileSystem() {
 }
 
 void initWiFi() {
-    WiFi.begin(ssid, password);     //Connect to your WiFi router
-    // Wait for connection
+    WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
     }
-    //If connection successful show IP address in serial monitor
-    Serial.println("");
-    Serial.print("Connected to ");
-    Serial.println(ssid);
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());  //IP address assigned to your ESP
+    
+    Serial.println("\nConnected to " + ssid);
+    Serial.println("IP address: " + WiFi.localIP().toString() + "\n");
+}
+
+void initServer() {
     server.serveStatic("/", SPIFFS, "/index.html");
     server.serveStatic("/alerts.html", SPIFFS, "/alerts.html");
     server.on("/xml", handleXML);
