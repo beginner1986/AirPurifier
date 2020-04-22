@@ -22,9 +22,9 @@ function handleServerResponse() {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         xmlResponse = xmlHttp.responseXML;
         xmldoc = xmlResponse.getElementsByTagName('response');
-        document.getElementById('pm1').innerHTML = xmldoc[0].getElementsByTagName('pm1')[0].childNodes[0].nodeValue + " μg/m3";
-        document.getElementById('pm2_5').innerHTML = xmldoc[0].getElementsByTagName('pm2_5')[0].childNodes[0].nodeValue + " μg/m3";
-        document.getElementById('pm10').innerHTML = xmldoc[0].getElementsByTagName('pm10')[0].childNodes[0].nodeValue + " μg/m3";
+        document.getElementById('pm1').innerHTML = xmldoc[0].getElementsByTagName('pm1')[0].childNodes[0].nodeValue + " &microg/m<sup>3</sup>";
+        document.getElementById('pm2_5').innerHTML = xmldoc[0].getElementsByTagName('pm2_5')[0].childNodes[0].nodeValue + " &microg/m<sup>3</sup>";
+        document.getElementById('pm10').innerHTML = xmldoc[0].getElementsByTagName('pm10')[0].childNodes[0].nodeValue + " &microg/m<sup>3</sup>";
         document.getElementById('temperature').innerHTML = xmldoc[0].getElementsByTagName('temperature')[0].childNodes[0].nodeValue + " &deg;C";
         document.getElementById('pressure').innerHTML = xmldoc[0].getElementsByTagName('pressure')[0].childNodes[0].nodeValue + " hPa";
         document.getElementById('humidity').innerHTML = xmldoc[0].getElementsByTagName('humidity')[0].childNodes[0].nodeValue + " %";

@@ -112,8 +112,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="data\contact.html" />
     <None Include="data\data.js" />
+    <None Include="data\img\bars.svg" />
     <None Include="data\index.html" />
+    <None Include="data\settings.html" />
     <None Include="data\styles.css" />
     <None Include="data\ui.js" />
     <None Include="src\arduino folders read me.txt">
@@ -124,6 +127,12 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="SensorsData.h" />
     <ClInclude Include="__vm\.AirPurifier.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\img\arrow.png" />
+    <Image Include="data\img\background.jpg" />
+    <Image Include="data\img\cloud.png" />
+    <Image Include="data\img\star.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,6 +16,9 @@
     <Filter Include="data">
       <UniqueIdentifier>{315afea0-c33d-47b1-bded-fa6cb693f070}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\img">
+      <UniqueIdentifier>{03acce15-f0f8-4073-9e44-22baf97143d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="AirPurifier.ino" />
@@ -34,6 +37,15 @@
     <None Include="data\ui.js">
       <Filter>data</Filter>
     </None>
+    <None Include="data\contact.html">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\settings.html">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\img\bars.svg">
+      <Filter>data\img</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.AirPurifier.vsarduino.h">
@@ -48,5 +60,19 @@
     <ClInclude Include="SensorsData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\img\arrow.png">
+      <Filter>data\img</Filter>
+    </Image>
+    <Image Include="data\img\background.jpg">
+      <Filter>data\img</Filter>
+    </Image>
+    <Image Include="data\img\cloud.png">
+      <Filter>data\img</Filter>
+    </Image>
+    <Image Include="data\img\star.png">
+      <Filter>data\img</Filter>
+    </Image>
   </ItemGroup>
 </Project>

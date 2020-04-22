@@ -13,6 +13,17 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="styles.css" rel="stylesheet" />
+
+    <style>
+        .tile {
+            outline-color: black;
+            border-radius: 20px;
+            border-color: white;
+            border-width: 7px;
+            border-style: double;
+            color: black;
+        }
+    </style>
 </head>
 <body id="page-top" onload="process()">
     <!-- Navigation-->
@@ -29,7 +40,7 @@
         </div>
     </nav>
 
-    <section class="page-section bg-primary text-white mb-0" id="about" style="margin-top: 25px">
+    <section class="page-section bg-primary text-white mb-0" style="margin-top: 25px; background-image: url('background.jpg')">
         <div class="container">
             <!-- Section Heading-->
             <h2 class="page-section-heading text-center text-uppercase text-white">INFORMACJE</h2>
@@ -43,7 +54,7 @@
             <div class="row" style="text-align: center; font-weight:bold; font-size: x-large;">
                 <!-- Item 1-->
                 <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto">
+                    <div class="portfolio-item mx-auto tile">
                        <figure>
                            <figcaption>PM 1</figcaption>
                            <div id="pm1">-</div>
@@ -52,7 +63,7 @@
                 </div>
                 <!-- Item 2-->
                 <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto">
+                    <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>PM 2.5</figcaption>
                             <div id="pm2_5">-</div>
@@ -61,7 +72,7 @@
                 </div>
                 <!-- Item 3-->
                 <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto">
+                    <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>PM 10</figcaption>
                             <div id="pm10">-</div>
@@ -70,7 +81,7 @@
                 </div>
                 <!-- Item 4-->
                 <div class="col-md-6 col-lg-4 mb-5 mb-lg-0">
-                    <div class="portfolio-item mx-auto">
+                    <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>Temperatura</figcaption>
                             <div id="temperature">-</div>
@@ -79,7 +90,7 @@
                 </div>
                 <!-- Item 5-->
                 <div class="col-md-6 col-lg-4 mb-5 mb-md-0">
-                    <div class="portfolio-item mx-auto">
+                    <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>Ciśnienie</figcaption>
                             <div id="pressure">-</div>
@@ -88,7 +99,7 @@
                 </div>
                 <!-- Item 6-->
                 <div class="col-md-6 col-lg-4">
-                    <div class="portfolio-item mx-auto">
+                    <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>Wilgotność</figcaption>
                             <div id="humidity">-</div>
