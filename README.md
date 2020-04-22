@@ -23,6 +23,10 @@ Libraries:
 - for Web Server:
     - ESP8266WebServer: https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
 
+Frontend:
+- Bootstrap
+- Freelancer theme: https://startbootstrap.com/previews/freelancer/
+
 Wiring:
 - BME280 (I2C):
     - VCC -> 3V3

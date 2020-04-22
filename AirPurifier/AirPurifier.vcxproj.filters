@@ -22,13 +22,16 @@
     <None Include="src\arduino folders read me.txt">
       <Filter>Misc Files</Filter>
     </None>
-    <None Include="data\alerts.html">
-      <Filter>data</Filter>
-    </None>
     <None Include="data\index.html">
       <Filter>data</Filter>
     </None>
-    <None Include="data\script.js">
+    <None Include="data\data.js">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\styles.css">
+      <Filter>data</Filter>
+    </None>
+    <None Include="data\ui.js">
       <Filter>data</Filter>
     </None>
   </ItemGroup>
