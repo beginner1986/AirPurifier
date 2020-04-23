@@ -61,6 +61,21 @@
     <None Include="data\css\tile.css">
       <Filter>data\css</Filter>
     </None>
+    <None Include="data\css\fonts.css">
+      <Filter>data\css</Filter>
+    </None>
+    <None Include="data\css\fonts-italic.css">
+      <Filter>data\css</Filter>
+    </None>
+    <None Include="data\js\bootstrap.bundle.min.js">
+      <Filter>data\js</Filter>
+    </None>
+    <None Include="data\js\jquery.easing.min.js">
+      <Filter>data\js</Filter>
+    </None>
+    <None Include="data\js\jquery.min.js">
+      <Filter>data\js</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.AirPurifier.vsarduino.h">
