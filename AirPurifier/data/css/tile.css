@@ -10,3 +10,7 @@
     font-weight: bold;
     font-size: xx-large;
 }
+
+body.pace-running > *:not(.pace) {
+  opacity:0;
+}

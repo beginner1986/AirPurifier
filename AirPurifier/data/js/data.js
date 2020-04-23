@@ -74,9 +74,9 @@ function handleServerResponse() {
         }
 
         if (pressure <= 860 || pressure >= 1100) {
-            document.getElementById('temperature').style.color = 'red';
+            document.getElementById('pressure').style.color = 'red';
         } else {
-            document.getElementById('temperature').style.color = 'black';
+            document.getElementById('pressure').style.color = 'black';
         }
     }
 }
