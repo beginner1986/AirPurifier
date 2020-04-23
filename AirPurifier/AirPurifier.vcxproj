@@ -112,7 +112,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\contact.html" />
     <None Include="data\css\fonts-italic.css" />
     <None Include="data\css\fonts.css" />
     <None Include="data\css\pace.css" />
@@ -126,7 +125,6 @@
     <None Include="data\js\jquery.min.js" />
     <None Include="data\js\pace.min.js" />
     <None Include="data\js\ui.js" />
-    <None Include="data\settings.html" />
     <None Include="src\arduino folders read me.txt">
     </None>
   </ItemGroup>

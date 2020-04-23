@@ -34,12 +34,13 @@
     $('.js-scroll-trigger').click(function() {
       $('.navbar-collapse').collapse('hide');
     });
-  
+  /*
     // Activate scrollspy to add active class to navbar items on scroll
     $('body').scrollspy({
       target: '#mainNav',
       offset: 80
     });
+   */
   
     // Collapse Navbar
     var navbarCollapse = function() {
@@ -54,16 +55,22 @@
     // Collapse the navbar when page is scrolled
     $(window).scroll(navbarCollapse);
   
-    // Floating label headings for the contact form
-    $(function() {
-      $("body").on("input propertychange", ".floating-label-form-group", function(e) {
-        $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
-      }).on("focus", ".floating-label-form-group", function() {
-        $(this).addClass("floating-label-form-group-with-focus");
-      }).on("blur", ".floating-label-form-group", function() {
-        $(this).removeClass("floating-label-form-group-with-focus");
-      });
-    });
-  
   })(jQuery); // End of use strict
-  
+
+function showInfo() {
+    document.getElementById('settings').style.display = 'none';
+    document.getElementById('contact').style.display = 'none';
+    document.getElementById('info').style.display = 'block';
+}
+ 
+function showSettings() {
+    document.getElementById('contact').style.display = 'none';
+    document.getElementById('info').style.display = 'none';
+    document.getElementById('settings').style.display = 'block';
+}
+
+function showContact() {
+    document.getElementById('settings').style.display = 'none';
+    document.getElementById('info').style.display = 'none';
+    document.getElementById('contact').style.display = 'block';
+}

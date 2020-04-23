@@ -207,8 +207,6 @@ void initWiFi() {
 void initServer() {
     server.serveStatic("/", SPIFFS, "/index.html");
     server.serveStatic("/index.html", SPIFFS, "/index.html");
-    server.serveStatic("/settings.html", SPIFFS, "/settings.html");
-    server.serveStatic("/contact.html", SPIFFS, "/contact.html");
 
     server.serveStatic("/css/styles.css", SPIFFS, "/css/styles.css");
     server.serveStatic("/css/tile.css", SPIFFS, "/css/tile.css");

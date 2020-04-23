@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*!
 * Start Bootstrap - Freelancer v6.0.1 (https://startbootstrap.com/themes/freelancer)
 * Copyright 2013-2020 Start Bootstrap
@@ -4324,7 +4324,7 @@ input[type=button].btn-block {
   color: #fff;
 }
 .navbar-dark .navbar-text a:hover, .navbar-dark .navbar-text a:focus {
-  color: #fff;
+  color: #fff;  
 }
 
 .card {
@@ -10046,7 +10046,7 @@ h3 {
   color: #fff;
 }
 #mainNav .navbar-nav li.nav-item a.nav-link.active {
-  color: #1abc9c;
+ color: #1abc9c;
 }
 #mainNav .navbar-toggler {
   font-size: 80%;
