@@ -19,6 +19,12 @@
     <Filter Include="data\img">
       <UniqueIdentifier>{03acce15-f0f8-4073-9e44-22baf97143d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="data\js">
+      <UniqueIdentifier>{0060d87c-91a7-47b8-ac6b-21c9ac938727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data\css">
+      <UniqueIdentifier>{156105ed-88b3-4733-a3fa-8034fc8d2cac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="AirPurifier.ino" />
@@ -26,15 +32,6 @@
       <Filter>Misc Files</Filter>
     </None>
     <None Include="data\index.html">
-      <Filter>data</Filter>
-    </None>
-    <None Include="data\data.js">
-      <Filter>data</Filter>
-    </None>
-    <None Include="data\styles.css">
-      <Filter>data</Filter>
-    </None>
-    <None Include="data\ui.js">
       <Filter>data</Filter>
     </None>
     <None Include="data\contact.html">
@@ -45,6 +42,24 @@
     </None>
     <None Include="data\img\bars.svg">
       <Filter>data\img</Filter>
+    </None>
+    <None Include="data\js\data.js">
+      <Filter>data\js</Filter>
+    </None>
+    <None Include="data\js\pace.min.js">
+      <Filter>data\js</Filter>
+    </None>
+    <None Include="data\js\ui.js">
+      <Filter>data\js</Filter>
+    </None>
+    <None Include="data\css\pace.css">
+      <Filter>data\css</Filter>
+    </None>
+    <None Include="data\css\styles.css">
+      <Filter>data\css</Filter>
+    </None>
+    <None Include="data\css\tile.css">
+      <Filter>data\css</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

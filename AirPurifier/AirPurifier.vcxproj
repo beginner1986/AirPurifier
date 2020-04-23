@@ -113,12 +113,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="data\contact.html" />
-    <None Include="data\data.js" />
+    <None Include="data\css\pace.css" />
+    <None Include="data\css\styles.css" />
+    <None Include="data\css\tile.css" />
     <None Include="data\img\bars.svg" />
     <None Include="data\index.html" />
+    <None Include="data\js\data.js" />
+    <None Include="data\js\pace.min.js" />
+    <None Include="data\js\ui.js" />
     <None Include="data\settings.html" />
-    <None Include="data\styles.css" />
-    <None Include="data\ui.js" />
     <None Include="src\arduino folders read me.txt">
     </None>
   </ItemGroup>

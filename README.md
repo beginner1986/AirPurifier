@@ -24,8 +24,9 @@ Libraries:
     - ESP8266WebServer: https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
 
 Frontend:
-- Bootstrap
-- Freelancer theme: https://startbootstrap.com/previews/freelancer/
+- Bootstrap: https://getbootstrap.com/
+- Modified Freelancer theme: https://startbootstrap.com/previews/freelancer/
+- Pace - Automatic page load progress bar: https://github.hubspot.com/pace/docs/welcome/
 
 Wiring:
 - BME280 (I2C):

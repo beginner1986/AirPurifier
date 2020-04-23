@@ -1,0 +1,12 @@
+﻿.tile {
+    outline-color: black;
+    border-radius: 20px;
+    border-color: white;
+    border-width: 7px;
+    border-style: double;
+    background-color: rgba(214, 229, 255, 0.5);
+    color: black;
+    text-align: center;
+    font-weight: bold;
+    font-size: xx-large;
+}

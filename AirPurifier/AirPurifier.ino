@@ -209,15 +209,21 @@ void initServer() {
     server.serveStatic("/index.html", SPIFFS, "/index.html");
     server.serveStatic("/settings.html", SPIFFS, "/settings.html");
     server.serveStatic("/contact.html", SPIFFS, "/contact.html");
-    server.serveStatic("/script.js", SPIFFS, "/script.js");
-    server.serveStatic("/styles.css", SPIFFS, "/styles.css");
-    server.serveStatic("/data.js", SPIFFS, "/data.js");
-    server.serveStatic("/ui.js", SPIFFS, "/ui.js");
+
+    server.serveStatic("/css/styles.css", SPIFFS, "/css/styles.css");
+    server.serveStatic("/css/tile.css", SPIFFS, "/css/tile.css");
+    server.serveStatic("/css/pace.css", SPIFFS, "/css/pace.css");
+
+    server.serveStatic("/js/data.js", SPIFFS, "/js/data.js");
+    server.serveStatic("/js/pace.min.js", SPIFFS, "/js/pace.min.js");
+    server.serveStatic("/js/ui.js", SPIFFS, "/js/ui.js");
+
     server.serveStatic("/img/background.jpg", SPIFFS, "/img/background.jpg");
     server.serveStatic("/img/cloud.png", SPIFFS, "/img/cloud.png");
     server.serveStatic("/img/arrow.png", SPIFFS, "/img/arrow.png");
     server.serveStatic("/img/star.png", SPIFFS, "/img/star.png");
     server.serveStatic("/img/bars.svg", SPIFFS, "/img/bars.svg");
+
     server.on("/xml", handleXML);
     //server.on("/xmla", handleAlertData);
     //server.on("/save", handleSave);
