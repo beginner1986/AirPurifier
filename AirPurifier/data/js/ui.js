@@ -74,3 +74,63 @@ function showContact() {
     document.getElementById('info').style.display = 'none';
     document.getElementById('contact').style.display = 'block';
 }
+
+
+
+
+
+        $(document).ready(function () {
+            $("div.desc").hide();
+            $("input[name$='options']").click(function () {
+                var test = $(this).val();
+                $("div.desc").hide();
+                $("#" + test).show();
+
+
+
+            });
+        });
+        $(document).ready(function () {
+            $("#option1").trigger('click');
+            $("#manual").show();
+        });
+
+
+$(function() {
+    $('#manualslide').slider({
+        max: 100,
+        min: 0,
+        value: 0,
+        slide: function(e, ui) {
+            $('#manualval').html(ui.value);
+        }
+    });
+
+    $('#semiautoslide').slider({
+        max: 100,
+        min: 0,
+        value: 0,
+        slide: function(e, ui) {
+            $('#semiautoval').html(ui.value);
+        }
+    });
+
+    $('#pmslide').slider({
+        max: 200,
+        min: 0,
+        value: 0,
+        slide: function(e, ui) {
+            $('#pmval').html(ui.value);
+        }
+    });
+
+    $('#rangeslider').slider({
+        range: true,
+        min: 0,
+        max: 200,
+        values: [20, 60],
+        slide: function(event, ui) {
+            $('#rangeval').html(ui.values[0] + " - " + ui.values[1]);
+        }
+    });
+});

@@ -113,32 +113,93 @@
                 <div class="divider-custom-line"></div>
             </div>
             <!-- Grid Items-->
-            <div class="row">
-                <!-- Item 1-->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto tile">
-                        <figure>
-                            <figcaption>PM 1</figcaption>
-                            <div id="pm1">-</div>
-                        </figure>
-                    </div>
+            <div class="portfolio-item mx-auto tile">
+                <div class="btn btn-group-toggle" data-toggle="buttons">
+
+                    <label class="btn btn-xl btn-outline-light">
+                        <input type="radio" name="options" id="option1" value="manual" autocomplete="off"> Manualnie
+                    </label>
+
+                    <label class="btn btn-xl btn-outline-light">
+                        <input type="radio" name="options" id="option2" value="semiauto" autocomplete="off"> Półautomat
+                    </label>
+
+                    <label class="btn btn-xl btn-outline-light">
+                        <input type="radio" name="options" id="option3" value="auto" autocomplete="off"> Automat
+                    </label>
+
+                    <label class="btn btn-xl btn-outline-light">
+                        <input type="radio" name="options" id="option4" value="off" autocomplete="off"> Wyłącz
+                    </label>
+
                 </div>
-                <!-- Item 2-->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto tile">
-                        <figure>
-                            <figcaption>PM 2.5</figcaption>
-                            <div id="pm2_5">-</div>
-                        </figure>
+                <div id="myRadioGroup">
+                    <br />
+
+                    <div id="manual" class="desc">
+
+                        <div id="manualslider">
+                            Prędkość wentylatora: <span id="manualval">0</span>%
+                        </div>
+
+                        <div id="manualslide"></div>
+
+                        <br>
+
                     </div>
-                </div>
-                <!-- Item 3-->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="portfolio-item mx-auto tile">
-                        <figure>
-                            <figcaption>PM 10</figcaption>
-                            <div id="pm10">-</div>
-                        </figure>
+                    <div id="semiauto" class="desc">
+
+                        <div id="rangedval">
+                            Zakres aktywności PM: <span id="rangeval">20 - 80</span>
+                        </div>
+
+                        <div id="rangeslider"></div>
+
+                        <br />
+                        <div id="semiautoslider">
+                            Prędkość wentylatora: <span id="semiautoval">0</span>%
+                        </div>
+
+                        <div id="semiautoslide"></div>
+                        <br />
+                        <div class="input-group">
+                            <select class="custom-select" id="select1" name="room" aria-label="Example select with button addon">
+                                <option selected>Wybierz rozmiar cząsteczek</option>
+                                <option value="1">PM 1</option>
+                                <option value="25">PM 2.5</option>
+                                <option value="10">PM 10</option>
+
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-light" type="button" id="save_button">Zastosuj</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="auto" class="desc">
+                        <br />
+                        <div id="pmslider">
+                            Wartość PM do utrzymania: <span id="pmval">0</span>
+                        </div>
+
+                        <div id="pmslide"></div>
+                        <br />
+                        <div class="input-group">
+                            <select class="custom-select" id="select1" name="room" aria-label="Example select with button addon">
+                                <option selected>Wybierz rozmiar cząsteczek</option>
+                                <option value="1">PM 1</option>
+                                <option value="25">PM 2.5</option>
+                                <option value="10">PM 10</option>
+
+                            </select>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-light" type="button" id="save_button">Zastosuj</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="off" class="desc">
+                        Wyłączono
                     </div>
                 </div>
             </div>
@@ -226,5 +287,8 @@
     <!-- Core theme JS-->
     <script src="js/ui.js"></script>
     <script src="js/data.js"></script>
+    <!-- Slider plugins-->
+    <link rel="stylesheet" type="text/css" media="all" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 </body>
 </html>
