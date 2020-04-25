@@ -85,9 +85,10 @@ function showContact() {
                 var test = $(this).val();
                 $("div.desc").hide();
                 $("#" + test).show();
-
-
-
+                if (test == "off") {
+                    $.get('/save?turnoff=1', function (data) {
+                    });
+                }
             });
         });
         $(document).ready(function () {
@@ -96,41 +97,3 @@ function showContact() {
         });
 
 
-$(function() {
-    $('#manualslide').slider({
-        max: 100,
-        min: 0,
-        value: 0,
-        slide: function(e, ui) {
-            $('#manualval').html(ui.value);
-        }
-    });
-
-    $('#semiautoslide').slider({
-        max: 100,
-        min: 0,
-        value: 0,
-        slide: function(e, ui) {
-            $('#semiautoval').html(ui.value);
-        }
-    });
-
-    $('#pmslide').slider({
-        max: 200,
-        min: 0,
-        value: 0,
-        slide: function(e, ui) {
-            $('#pmval').html(ui.value);
-        }
-    });
-
-    $('#rangeslider').slider({
-        range: true,
-        min: 0,
-        max: 200,
-        values: [20, 60],
-        slide: function(event, ui) {
-            $('#rangeval').html(ui.values[0] + " - " + ui.values[1]);
-        }
-    });
-});

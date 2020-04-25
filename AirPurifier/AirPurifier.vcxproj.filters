@@ -70,18 +70,18 @@
     <None Include="data\js\jquery.min.js">
       <Filter>data\js</Filter>
     </None>
+    <None Include="data\js\settings.js">
+      <Filter>data\js</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.AirPurifier.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Alert.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SensorsData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

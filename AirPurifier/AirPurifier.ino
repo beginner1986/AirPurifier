@@ -40,8 +40,8 @@ Web Server:
 #include <ESP8266WebServer.h>
 
 #include "SensorsData.h"
-//#include "Node.h"
-//#include "Alert.h"
+#include "SettingsData.h"
+
 //----------- /INCLUDES ----------------
 
 // ------------ CONSTS ----------------
@@ -60,21 +60,20 @@ unsigned long deltaTime = 0;
 
 int alertArrayIndex = 0;
 String wholeAlertData[20];
-//Node nodeArray[]{ { 0, 0, 0, 0}, { 0, 0, 0, 0}, { 0, 0, 0, 0} };
-//Alert alertArray[20];
 
 Adafruit_BME280 bme;
 SdsDustSensor sds(SDS011_RX_PIN, SDS011_TX_PIN);
 ESP8266WebServer server(80);
 
 SensorData sensorData;
+SettingsData settingsData;
 // ----------- /GLOBALS ----------------
 
 // ------------ SETUP -----------------
 void setup() {
     Serial.begin(9600);
-    initBme280();
-    initSds011();
+    //initBme280();
+    //initSds011();
     initFileSystem();
     initWiFi();
     initServer();
@@ -84,20 +83,7 @@ void setup() {
 // ----------- LOOP -----------------
 void loop() {
     server.handleClient();
-    deltaTime = millis() - mainLoopTime;
-
-    if (deltaTime < SDS_WORKING_PERIOD) {
-        sdsTurnOff();
-    }
-    else if(deltaTime < 2 * SDS_WORKING_PERIOD) {
-        sdsTurnOn();
-    }
-    else {
-        readSds011Values();
-        readBme280Values();
-        Serial.println("\n");
-        mainLoopTime = millis();
-    }
+	//measureData();
 }
 // ----------- /LOOP -----------------
 
@@ -153,38 +139,62 @@ void readSds011Values() {
         Serial.println("SDS011 sensor data read error: " + pm.statusToString());
     }
 }
+void measureData() {
+	deltaTime = millis() - mainLoopTime;
 
+	if (deltaTime < SDS_WORKING_PERIOD) {
+		sdsTurnOff();
+	}
+	else if(deltaTime < 2 * SDS_WORKING_PERIOD) {
+		sdsTurnOn();
+	}
+	else {
+		readSds011Values();
+		readBme280Values();
+		Serial.println("\n");
+		mainLoopTime = millis();
+	}
+}
 void handleXML() {
     String XML = sensorData.getXML();
     server.send(200, "text/xml", XML);
 }
 
-/*
-void handleAlertData() {
-    String XML = "<?xml version='1.0'?>";
-    XML += "<response>";
-    for (int i = 0; i < 20; i++)
-        XML += wholeAlertData[i];
-    XML += "</response>";
-    server.send(200, "text/xml", XML);
-}
-*/
-
-/*
 void handleSave() {
-    if (server.arg("room") != "" && server.arg("attribute") != "" && server.arg("sign") != "" && server.arg("val") != "" && server.arg("alertNames") != "") {
-        alertArray[alertArrayIndex].nodeNum = server.arg("room").toInt();
-        alertArray[alertArrayIndex].attribute = server.arg("attribute").toInt();
-        alertArray[alertArrayIndex].sign = server.arg("sign").toInt();
-        alertArray[alertArrayIndex].val = server.arg("val").toFloat();
-        alertArray[alertArrayIndex].isActive = 1;
-        wholeAlertData[alertArrayIndex] = server.arg("alertNames");
-        alertArrayIndex++;
-        Serial.println("alert added");
-        handleAlertData();
+	Serial.println("received something");
+
+    if (server.arg("manualslider") != "") {
+		settingsData.manualslider = server.arg("manualslider").toInt();
+		server.send(200, "text/plain", "");
+		Serial.println(settingsData.manualslider);
     }
+
+	if (server.arg("pmstart") != "" && server.arg("pmend") != "" && server.arg("semiautoslider") != "" && server.arg("pmtype") != "") {
+		settingsData.pmstart = server.arg("pmstart").toInt();
+		settingsData.pmend = server.arg("pmend").toInt();
+		settingsData.semiautoslider = server.arg("semiautoslider").toInt();
+		settingsData.pmtype = server.arg("pmtype").toInt();
+		server.send(200, "text/plain", "");
+		Serial.println(settingsData.pmstart);
+		Serial.println(settingsData.pmend);
+		Serial.println(settingsData.semiautoslider);
+		Serial.println(settingsData.pmtype);
+	}
+
+	if (server.arg("pmtokeep") != "" && server.arg("pmtypetokeep") != "") {
+		settingsData.pmtokeep = server.arg("pmtokeep").toInt();
+		settingsData.pmtypetokeep = server.arg("pmtypetokeep").toInt();
+		server.send(200, "text/plain", "");
+		Serial.println(settingsData.pmtokeep);
+		Serial.println(settingsData.pmtypetokeep);
+	}
+
+	if (server.arg("turnoff") == "1") {
+		server.send(200, "text/plain", "");
+		Serial.println("turn off");
+	}
 }
-*/
+
 
 void initFileSystem() {
     if (!SPIFFS.begin()) {
@@ -217,6 +227,7 @@ void initServer() {
     server.serveStatic("/js/data.js", SPIFFS, "/js/data.js");
     server.serveStatic("/js/pace.min.js", SPIFFS, "/js/pace.min.js");
     server.serveStatic("/js/ui.js", SPIFFS, "/js/ui.js");
+	server.serveStatic("/js/settings.js", SPIFFS, "/js/settings.js");
     server.serveStatic("/js/jquery.min.js", SPIFFS, "/js/jquery.min.js");
     server.serveStatic("/js/bootstrap.bundle.min.js", SPIFFS, "/js/bootstrap.bundle.min.js");
     server.serveStatic("/js/jquery.easing.min.js", SPIFFS, "/js/jquery.easing.min.js");
@@ -228,8 +239,7 @@ void initServer() {
     server.serveStatic("/img/bars.svg", SPIFFS, "/img/bars.svg");
 
     server.on("/xml", handleXML);
-    //server.on("/xmla", handleAlertData);
-    //server.on("/save", handleSave);
+    server.on("/save", handleSave);
 
     server.begin();
     Serial.println("HTTP server started.\n");
