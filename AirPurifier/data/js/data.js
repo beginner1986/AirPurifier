@@ -55,7 +55,7 @@ function handleServerResponse() {
 
         if (pm10 > 50) {
             document.getElementById('pm10').style.color = 'red';
-        } else if (pm10 > 205) {
+        } else if (pm10 > 20) {
             document.getElementById('pm10').style.color = '#ff6a00';
         } else {
             document.getElementById('pm10').style.color = 'black';
