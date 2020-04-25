@@ -77,6 +77,7 @@ void setup() {
     initFileSystem();
     initWiFi();
     initServer();
+	sensorData.mode = 1;
 }
 // ----------- /SETUP -----------------
 
@@ -189,9 +190,10 @@ void handleSave() {
 		Serial.println(settingsData.pmtypetokeep);
 	}
 
-	if (server.arg("turnoff") == "1") {
+	if (server.arg("mode") != "") {
+		sensorData.mode = server.arg("mode").toInt();
 		server.send(200, "text/plain", "");
-		Serial.println("turn off");
+		Serial.println(sensorData.mode);
 	}
 }
 

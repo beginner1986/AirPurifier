@@ -29,7 +29,7 @@ function handleServerResponse() {
         var temperature = xmldoc[0].getElementsByTagName('temperature')[0].childNodes[0].nodeValue;
         var pressure = xmldoc[0].getElementsByTagName('pressure')[0].childNodes[0].nodeValue;
         var humidity = xmldoc[0].getElementsByTagName('humidity')[0].childNodes[0].nodeValue;
-
+        globalMode = xmldoc[0].getElementsByTagName('mode')[0].childNodes[0].nodeValue;
         document.getElementById('pm1').innerHTML = pm1 + " &microg/m<sup>3</sup>";
         document.getElementById('pm2_5').innerHTML = pm2_5 + " &microg/m<sup>3</sup>";
         document.getElementById('pm10').innerHTML = pm10 + " &microg/m<sup>3</sup>";

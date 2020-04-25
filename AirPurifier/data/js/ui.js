@@ -79,21 +79,64 @@ function showContact() {
 
 
 
-        $(document).ready(function () {
-            $("div.desc").hide();
-            $("input[name$='options']").click(function () {
-                var test = $(this).val();
-                $("div.desc").hide();
-                $("#" + test).show();
-                if (test == "off") {
-                    $.get('/save?turnoff=1', function (data) {
-                    });
-                }
-            });
-        });
-        $(document).ready(function () {
-            $("#option1").trigger('click');
-            $("#manual").show();
-        });
+$(document).ready(function () {
+    $("div.desc").hide();
+    $("input[name$='options']").click(function () {
+        var test = $(this).val();
+        $("div.desc").hide();
+        $("#" + test).show();
+        switch (test) {
+            case "manual": {
+                globalMode = 1;
+                $.get('/save?mode=' + globalMode, function (data) { });
+                break;
+            }
+            case "semiauto": {
+                globalMode = 2;
+                $.get('/save?mode=' + globalMode, function (data) { });
+                break;
+            }
+            case "auto": {
+                globalMode = 3;
+                $.get('/save?mode=' + globalMode, function (data) { });
+                break;
+            }
+            case "off": {
+                globalMode = 4;
+                $.get('/save?mode=' + globalMode, function (data) { });
+                break;
+            }
+        }
 
+    });
+});
+
+$(document).ready(function () {
+    setTimeout(function () {
+        console.log(globalMode);
+        switch (globalMode) {
+            case "1": {
+                $("#option1").trigger('click');
+                $("#manual").show();
+                break;
+            }
+            case "2": {
+                $("#option2").trigger('click');
+                $("#semiauto").show();
+                break;
+            }
+            case "3": {
+                $("#option3").trigger('click');
+                $("#auto").show();
+                break;
+            }
+            case "4": {
+                $("#option4").trigger('click');
+                $("#off").show();
+                break;
+
+            }
+        }
+    }, 1000);
+});
 
