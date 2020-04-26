@@ -72,6 +72,7 @@ SettingsData settingsData;
 // ------------ SETUP -----------------
 void setup() {
     Serial.begin(9600);
+	pinMode(0, OUTPUT);
     //initBme280();
     //initSds011();
     initFileSystem();
@@ -85,10 +86,53 @@ void setup() {
 void loop() {
     server.handleClient();
 	//measureData();
+	switch (sensorData.mode)
+	{
+	case 1:
+	{
+		manualMode();
+		break;
+	}
+	case 2:
+	{
+		semiAutoMode();
+		break;
+	}
+	case 3:
+	{
+		autoMode();
+		break;
+	}
+	case 4:
+	{
+		off();
+		break;
+	}
+	}
 }
 // ----------- /LOOP -----------------
 
 // ----------- FUNCTIONS -----------------
+void manualMode() {
+	if (settingsData.manualslider != settingsData.lastmanualslider) {
+		analogWrite(0, map(settingsData.manualslider, 0, 100, 0, 1023));
+		
+	}
+	settingsData.lastmanualslider = settingsData.manualslider;
+	
+}
+
+void semiAutoMode() {
+
+}
+
+void autoMode() {
+
+}
+
+void off() {
+
+}
 void initBme280() {
     if (!bme.begin(BME280_ADDRESS_ALTERNATE)) {
         Serial.println("BME260 sensor not detected!");
@@ -159,6 +203,12 @@ void measureData() {
 void handleXML() {
     String XML = sensorData.getXML();
     server.send(200, "text/xml", XML);
+}
+void handleSettingsXML() {
+	String XML = settingsData.getSettingsXML();
+	XML += "<mode>" + String(sensorData.mode) + "</mode>\n";
+	XML += "</response>";
+	server.send(200, "text/xml", XML);
 }
 
 void handleSave() {
@@ -241,6 +291,7 @@ void initServer() {
     server.serveStatic("/img/bars.svg", SPIFFS, "/img/bars.svg");
 
     server.on("/xml", handleXML);
+	server.on("/settings", handleSettingsXML);
     server.on("/save", handleSave);
 
     server.begin();
