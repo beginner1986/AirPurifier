@@ -33,7 +33,6 @@ $(function () {
             document.getElementById('select1').value = pmtype;
             document.getElementById('pmval').innerHTML = pmtokeep;
             document.getElementById('select2').value = pmtypetokeep;
-            console.log("teraz przypisalem");
            
         }
     }
@@ -46,7 +45,6 @@ $(function () {
     var rangeslider = [];
     var pmtokeep;
     setTimeout(function () {
-    console.log("tera bylo potrzebne");
     $('#manualslide').slider({
         max: 100,
         min: 0,

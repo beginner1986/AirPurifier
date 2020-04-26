@@ -121,8 +121,48 @@ void manualMode() {
 	settingsData.lastmanualslider = settingsData.manualslider;
 	
 }
-
+int pmstart;
+int pmend;
+int semiautoslider;
+int pmtype;
 void semiAutoMode() {
+	if (settingsData.pmstart != settingsData.lastpmstart || settingsData.pmend != settingsData.lastpmend
+		|| settingsData.semiautoslider != settingsData.lastsemiautoslider || settingsData.pmtype != settingsData.lastpmtype
+		|| sensorData.pm1 != sensorData.lastpm1 || sensorData.pm2_5 != sensorData.lastpm2_5 || sensorData.pm10 != sensorData.lastpm10 ) {
+
+		switch (pmtype)
+		{
+		case 1:
+		{//should we work as normal when PMs are over pmend? or maybe bump fan?
+			if (sensorData.pm1 >= settingsData.pmstart && sensorData.pm1 <= settingsData.pmend || sensorData.pm1 >= settingsData.pmend)
+				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 0, 1023));
+			break;
+		}
+		case 25:
+		{
+			if (sensorData.pm2_5 >= settingsData.pmstart && sensorData.pm2_5 <= settingsData.pmend || sensorData.pm2_5 >= settingsData.pmend)
+				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 0, 1023));
+			break;
+
+		}
+		case 10:
+		{
+			if (sensorData.pm10 >= settingsData.pmstart && sensorData.pm10 <= settingsData.pmend || sensorData.pm10 >= settingsData.pmend)
+				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 0, 1023));
+			break;
+		}
+		}
+		
+		
+
+	}
+	settingsData.lastpmstart = settingsData.pmstart;
+	settingsData.lastpmend = settingsData.pmend;
+	settingsData.lastsemiautoslider = settingsData.semiautoslider;
+	settingsData.lastpmtype = settingsData.pmtype;
+	sensorData.lastpm1 = sensorData.pm1;
+	sensorData.lastpm2_5 = sensorData.pm2_5;
+	sensorData.lastpm10 = sensorData.pm10;
 
 }
 

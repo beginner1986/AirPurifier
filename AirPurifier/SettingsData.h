@@ -6,15 +6,19 @@ struct SettingsData {
 	int lastmanualslider;
 	//semiauto
 	int pmstart;
+	int lastpmstart;
 	int pmend;
+	int lastpmend;
 	int semiautoslider;
+	int lastsemiautoslider;
 	int pmtype;
+	int lastpmtype;
 	//auto
 	int pmtokeep;
 	int pmtypetokeep;
 
 	SettingsData()
-		: manualslider{ 0 }, lastmanualslider{ -1 }, pmstart{ 60 }, pmend{ 80 }, semiautoslider{ 0 }, pmtype{ 0 }, pmtokeep{ 0 }, pmtypetokeep{ 0 } {
+		: manualslider{ 0 }, lastmanualslider{ -1 }, pmstart{ 60 }, lastpmstart{ -1 }, pmend{ 80 }, lastpmend{ -1 }, semiautoslider{ 0 }, lastsemiautoslider{ -1 }, pmtype{ 0 }, lastpmtype{ -1 }, pmtokeep{ 0 }, pmtypetokeep{ 0 } {
 	}
 
 	String getSettingsXML() {

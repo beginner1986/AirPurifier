@@ -113,7 +113,6 @@ $(document).ready(function () {
 
 $(document).ready(function () {
     setTimeout(function () {
-        console.log(globalMode);
         switch (globalMode) {
             case "1": {
                 $("#option1").trigger('click');
