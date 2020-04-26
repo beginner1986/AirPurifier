@@ -11,6 +11,10 @@ SDS011:
     - G -> G
     - TXD -> D7
     - RXD -> D8
+FAN:
+	- +VCC -> 12V
+	- GND -> G
+	- PWM -> D3
 ----------- /PINOUT ---------------
 
 ------------- LIBS ----------------
@@ -50,7 +54,7 @@ Web Server:
 
 const String SSID = "beginner";
 const String WIFI_PASSWORD = "Anakonda11";
-const unsigned long SDS_WORKING_PERIOD = 10000UL;   // short time for debugging
+const unsigned long SDS_WORKING_PERIOD = 30000UL;   // working 30s with 30s break
 // ----------- /CONSTS ----------------
 
 // ------------ GLOBALS ----------------
@@ -73,8 +77,8 @@ SettingsData settingsData;
 void setup() {
     Serial.begin(9600);
 	pinMode(0, OUTPUT);
-    //initBme280();
-    //initSds011();
+    initBme280();
+    initSds011();
     initFileSystem();
     initWiFi();
     initServer();
@@ -85,29 +89,30 @@ void setup() {
 // ----------- LOOP -----------------
 void loop() {
     server.handleClient();
-	//measureData();
+	measureData();
+
 	switch (sensorData.mode)
 	{
-	case 1:
-	{
-		manualMode();
-		break;
-	}
-	case 2:
-	{
-		semiAutoMode();
-		break;
-	}
-	case 3:
-	{
-		autoMode();
-		break;
-	}
-	case 4:
-	{
-		off();
-		break;
-	}
+		case 1:
+		{
+			manualMode();
+			break;
+		}
+		case 2:
+		{
+			semiAutoMode();
+			break;
+		}
+		case 3:
+		{
+			autoMode();
+			break;
+		}
+		case 4:
+		{
+			off();
+			break;
+		}
 	}
 }
 // ----------- /LOOP -----------------
@@ -115,16 +120,18 @@ void loop() {
 // ----------- FUNCTIONS -----------------
 void manualMode() {
 	if (settingsData.manualslider != settingsData.lastmanualslider) {
-		analogWrite(0, map(settingsData.manualslider, 0, 100, 0, 1023));
+		analogWrite(0, map(settingsData.manualslider, 0, 100, 200, 900));
 		
 	}
 	settingsData.lastmanualslider = settingsData.manualslider;
 	
 }
+
 int pmstart;
 int pmend;
 int semiautoslider;
 int pmtype;
+
 void semiAutoMode() {
 	if (settingsData.pmstart != settingsData.lastpmstart || settingsData.pmend != settingsData.lastpmend
 		|| settingsData.semiautoslider != settingsData.lastsemiautoslider || settingsData.pmtype != settingsData.lastpmtype
@@ -173,6 +180,7 @@ void autoMode() {
 void off() {
 
 }
+
 void initBme280() {
     if (!bme.begin(BME280_ADDRESS_ALTERNATE)) {
         Serial.println("BME260 sensor not detected!");
@@ -224,6 +232,7 @@ void readSds011Values() {
         Serial.println("SDS011 sensor data read error: " + pm.statusToString());
     }
 }
+
 void measureData() {
 	deltaTime = millis() - mainLoopTime;
 
@@ -240,6 +249,7 @@ void measureData() {
 		mainLoopTime = millis();
 	}
 }
+
 void handleXML() {
     String XML = sensorData.getXML();
     server.send(200, "text/xml", XML);
@@ -286,7 +296,6 @@ void handleSave() {
 		Serial.println(sensorData.mode);
 	}
 }
-
 
 void initFileSystem() {
     if (!SPIFFS.begin()) {

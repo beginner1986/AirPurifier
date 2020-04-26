@@ -40,3 +40,8 @@ Wiring:
     - G -> G
     - TXD -> D7
     - RXD -> D8
+   
+- FAN:
+	- +VCC -> 12V
+	- GND -> G
+	- PWM -> D3
