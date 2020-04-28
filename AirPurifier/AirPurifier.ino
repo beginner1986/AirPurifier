@@ -324,6 +324,7 @@ void initServer() {
     server.serveStatic("/css/pace.css", SPIFFS, "/css/pace.css");
     server.serveStatic("/css/fonts.css", SPIFFS, "/css/fonts.css");
     server.serveStatic("/css/fonts-italic.css", SPIFFS, "/css/fonts-italic.css");
+    server.serveStatic("/css/jquery-ui.css", SPIFFS, "/css/jquery-ui.css");
 
     server.serveStatic("/js/data.js", SPIFFS, "/js/data.js");
     server.serveStatic("/js/pace.min.js", SPIFFS, "/js/pace.min.js");
@@ -332,6 +333,7 @@ void initServer() {
     server.serveStatic("/js/jquery.min.js", SPIFFS, "/js/jquery.min.js");
     server.serveStatic("/js/bootstrap.bundle.min.js", SPIFFS, "/js/bootstrap.bundle.min.js");
     server.serveStatic("/js/jquery.easing.min.js", SPIFFS, "/js/jquery.easing.min.js");
+    server.serveStatic("/js/jquery-ui.min.js", SPIFFS, "/js/jquery-ui.min.js");
 
     server.serveStatic("/img/background.jpg", SPIFFS, "/img/background.jpg");
     server.serveStatic("/img/cloud.png", SPIFFS, "/img/cloud.png");

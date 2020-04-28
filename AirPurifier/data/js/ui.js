@@ -34,13 +34,12 @@
     $('.js-scroll-trigger').click(function() {
       $('.navbar-collapse').collapse('hide');
     });
-  /*
+  
     // Activate scrollspy to add active class to navbar items on scroll
     $('body').scrollspy({
       target: '#mainNav',
       offset: 80
     });
-   */
   
     // Collapse Navbar
     var navbarCollapse = function() {
@@ -139,3 +138,18 @@ $(document).ready(function () {
     }, 1000);
 });
 
+// append css and js files from file system if internet connection or files are unavailable
+function loadCssOffline(file) {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = file;
+    document.getElementsByTagName('head')[0].appendChild(link);
+}
+
+function loadJsOffline(file) {
+    var script = document.createElement('script');
+    script.href = file;
+
+    document.getElementsByTagName('body')[0].appendChild(script);
+}
