@@ -19,7 +19,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" onerror="loadCssOffline('css/fonts.css');" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" onerror="loadCssOffline('css/fonts-italic.css');" rel="stylesheet" type="text/css" />
 </head>
-<body id="page-top" onload="showInfo(); process();">
+<body id="page-top" onload="hidePmTiles(); showInfo(); process();">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
         <div class="container">
@@ -47,7 +47,7 @@
             <!-- Grid Items-->
             <div class="row">
                 <!-- Item 1-->
-                <div class="col-md-6 col-lg-4 mb-5">
+                <div id="pm1-item" class="mb-5">
                     <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>PM 1</figcaption>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <!-- Item 2-->
-                <div class="col-md-6 col-lg-4 mb-5">
+                <div id="pm2_5-item" class="mb-5">
                     <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>PM 2.5</figcaption>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <!-- Item 3-->
-                <div class="col-md-6 col-lg-4 mb-5">
+                <div id="pm10-item" class="mb-5">
                     <div class="portfolio-item mx-auto tile">
                         <figure>
                             <figcaption>PM 10</figcaption>

@@ -19,7 +19,7 @@ struct SensorData {
 	String getXML() {
 		String XML = "";
 		XML += "<response>";
-		XML += "<pm1>" + (pm1 >= 0 ? String(pm1) : "-") + "</pm1>\n";
+		XML += "<pm1>" + (pm1 >= 0 ? String(pm1) : "-1") + "</pm1>\n";
 		XML += "<pm2_5>" + String(pm2_5) + "</pm2_5>\n";
 		XML += "<pm10>" + String(pm10) + "</pm10>\n";
 		XML += "<temperature>" + String(temperature) + "</temperature>\n";

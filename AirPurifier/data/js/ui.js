@@ -76,10 +76,6 @@ function showContact() {
     document.getElementById('contact').style.display = 'block';
 }
 
-
-
-
-
 $(document).ready(function () {
     $("div.desc").hide();
     $("input[name$='options']").click(function () {
@@ -154,4 +150,32 @@ function loadJsOffline(file) {
     script.href = file;
 
     document.getElementsByTagName('body')[0].appendChild(script);
+}
+
+// hide PMs tiles on page load
+function hidePmTiles() {
+    document.getElementById('pm1-item').style.display = 'none';
+    document.getElementById('pm2_5-item').style.display = 'none';
+    document.getElementById('pm10-item').style.display = 'none';
+}
+
+// show appropriate number of PM tiles in the info view depending on available sensor data
+// function called after first sensor data package recieved
+function showPmTiles(pm1) {
+    document.getElementById('pm2_5-item').style.display = 'block'; 
+    document.getElementById('pm10-item').style.display = 'block'; 
+
+    if (pm1 >= 0) {
+        document.getElementById('pm1-item').style.display = 'block';
+
+        document.getElementById('pm1-item').classList.add('col-md-6 col-lg-4');
+        document.getElementById('pm2_5-item').classList.add('col-md-6 col-lg-4');
+        document.getElementById('pm10-item').classList.add('col-md-6 col-lg-4');
+    }
+    else {
+        document.getElementById('pm1-item').style.display = 'hide';
+
+        document.getElementById('pm2_5-item').classList.add('col-sm-6');
+        document.getElementById('pm10-item').classList.add('col-sm-6');
+    }
 }

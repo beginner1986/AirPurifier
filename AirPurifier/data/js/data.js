@@ -78,5 +78,7 @@ function handleServerResponse() {
         } else {
             document.getElementById('pressure').style.color = 'black';
         }
+
+        showPmTiles(pm1);
     }
 }
