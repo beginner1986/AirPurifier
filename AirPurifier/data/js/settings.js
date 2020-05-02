@@ -101,7 +101,7 @@ $(function () {
 
 
     $('#pmslide').slider({
-        max: 200,
+        max: 100,
         min: 0,
         value: pmtokeep,
         slide: function (e, ui) {

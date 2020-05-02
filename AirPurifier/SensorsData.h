@@ -8,12 +8,13 @@ struct SensorData {
 	int pressure;
 	int humidity;
 	int mode;
+	int lastmode;
 	int lastpm1;
 	int lastpm2_5;
 	int lastpm10;
 
 	SensorData() 
-		: pm1{ 0 }, pm2_5{ 0 }, pm10{ 0 }, temperature{ 0 }, pressure{ 0 }, humidity{ 0 }, mode{ 0 }, lastpm1{ -1 }, lastpm2_5{ -1 }, lastpm10{ -1 } {
+		: pm1{ 0 }, pm2_5{ 0 }, pm10{ 0 }, temperature{ 0 }, pressure{ 0 }, humidity{ 0 }, mode{ 0 }, lastmode{ -1 }, lastpm1{ -1 }, lastpm2_5{ -1 }, lastpm10{ -1 } {
 	}
 
 	String getXML() {

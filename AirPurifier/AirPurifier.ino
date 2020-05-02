@@ -51,7 +51,6 @@ Web Server:
 // ------------ CONSTS ----------------
 #define SDS011_RX_PIN D7
 #define SDS011_TX_PIN D8
-
 const String SSID = "beginner";
 const String WIFI_PASSWORD = "Anakonda11";
 const unsigned long SDS_WORKING_PERIOD = 30000UL;   // working 30s with 30s break
@@ -77,8 +76,8 @@ SettingsData settingsData;
 void setup() {
     Serial.begin(9600);
 	pinMode(0, OUTPUT);
-    initBme280();
-    initSds011();
+    //initBme280();
+    //initSds011();
     initFileSystem();
     initWiFi();
     initServer();
@@ -89,28 +88,32 @@ void setup() {
 // ----------- LOOP -----------------
 void loop() {
     server.handleClient();
-	measureData();
+	//measureData();
 
 	switch (sensorData.mode)
 	{
 		case 1:
 		{
 			manualMode();
+			sensorData.lastmode = sensorData.mode;
 			break;
 		}
 		case 2:
 		{
 			semiAutoMode();
+			sensorData.lastmode = sensorData.mode;
 			break;
 		}
 		case 3:
 		{
 			autoMode();
+			sensorData.lastmode = sensorData.mode;
 			break;
 		}
 		case 4:
 		{
 			off();
+			sensorData.lastmode = sensorData.mode;
 			break;
 		}
 	}
@@ -121,41 +124,50 @@ void loop() {
 void manualMode() {
 	if (settingsData.manualslider != settingsData.lastmanualslider) {
 		analogWrite(0, map(settingsData.manualslider, 0, 100, 200, 900));
-		
+		sensorData.pm1 += 5;
+		sensorData.pm2_5 += 5;
+		sensorData.pm10 += 5;
 	}
 	settingsData.lastmanualslider = settingsData.manualslider;
 	
 }
 
-int pmstart;
-int pmend;
-int semiautoslider;
-int pmtype;
 
 void semiAutoMode() {
 	if (settingsData.pmstart != settingsData.lastpmstart || settingsData.pmend != settingsData.lastpmend
 		|| settingsData.semiautoslider != settingsData.lastsemiautoslider || settingsData.pmtype != settingsData.lastpmtype
 		|| sensorData.pm1 != sensorData.lastpm1 || sensorData.pm2_5 != sensorData.lastpm2_5 || sensorData.pm10 != sensorData.lastpm10 ) {
-
-		switch (pmtype)
+		switch (settingsData.pmtype)
 		{
 		case 1:
-		{//should we work as normal when PMs are over pmend? or maybe bump fan?
-			if (sensorData.pm1 >= settingsData.pmstart && sensorData.pm1 <= settingsData.pmend || sensorData.pm1 >= settingsData.pmend)
-				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 0, 1023));
+		{
+			if (sensorData.pm1 >= settingsData.pmstart && sensorData.pm1 <= settingsData.pmend)
+				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 200, 900));
+			else if (sensorData.pm1 >= settingsData.pmend)
+				analogWrite(0, 1023);
+			else if (sensorData.pm1 <= settingsData.pmstart)
+				analogWrite(0, 0);
 			break;
 		}
 		case 25:
 		{
-			if (sensorData.pm2_5 >= settingsData.pmstart && sensorData.pm2_5 <= settingsData.pmend || sensorData.pm2_5 >= settingsData.pmend)
-				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 0, 1023));
+			if (sensorData.pm2_5 >= settingsData.pmstart && sensorData.pm2_5 <= settingsData.pmend)
+				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 200, 900));
+			else if (sensorData.pm2_5 >= settingsData.pmend)
+				analogWrite(0, 1023);
+			else if (sensorData.pm2_5 <= settingsData.pmstart)
+				analogWrite(0, 0);
 			break;
 
 		}
 		case 10:
 		{
-			if (sensorData.pm10 >= settingsData.pmstart && sensorData.pm10 <= settingsData.pmend || sensorData.pm10 >= settingsData.pmend)
-				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 0, 1023));
+			if (sensorData.pm10 >= settingsData.pmstart && sensorData.pm10 <= settingsData.pmend)
+				analogWrite(0, map(settingsData.semiautoslider, 0, 100, 200, 900));
+			else if (sensorData.pm10 >= settingsData.pmend)
+				analogWrite(0, 1023);
+			else if (sensorData.pm10 <= settingsData.pmstart)
+				analogWrite(0, 0);
 			break;
 		}
 		}
@@ -174,16 +186,46 @@ void semiAutoMode() {
 }
 
 void autoMode() {
+	
+	if (sensorData.pm1 != sensorData.lastpm1 || sensorData.pm2_5 != sensorData.lastpm2_5 || sensorData.pm10 != sensorData.lastpm10 || 
+		settingsData.lastpmtokeep != settingsData.pmtokeep || settingsData.lastpmtypetokeep != settingsData.pmtypetokeep)
+	{
+		switch (settingsData.pmtypetokeep)
+		{
+		case 1:
+		{
+			analogWrite(0,(2+sensorData.pm1 - settingsData.pmtokeep)*75);
+			break;
+		}
+		case 25:
+		{
+			analogWrite(0, (2 + sensorData.pm2_5 - settingsData.pmtokeep) * 75);
+			break;
 
+		}
+		case 10:
+		{
+			analogWrite(0, (2 + sensorData.pm10 - settingsData.pmtokeep) * 75);
+			break;
+		}
+
+		}
+	}
+	sensorData.lastpm1 = sensorData.pm1;
+	sensorData.lastpm2_5 = sensorData.pm2_5;
+	sensorData.lastpm10 = sensorData.pm10;
+	settingsData.lastpmtokeep = settingsData.pmtokeep;
+	settingsData.lastpmtypetokeep = settingsData.pmtypetokeep;
 }
 
 void off() {
-
+	if (sensorData.lastmode != sensorData.mode)
+		analogWrite(0, 0);
 }
 
 void initBme280() {
     if (!bme.begin(BME280_ADDRESS_ALTERNATE)) {
-        Serial.println("BME260 sensor not detected!");
+        Serial.println("BME280 sensor not detected!");
         while (1);
     }
 }
